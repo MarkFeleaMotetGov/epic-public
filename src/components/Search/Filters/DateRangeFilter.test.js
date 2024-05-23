@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import { useSearch } from "contexts/Search";
 
@@ -20,5 +20,16 @@ describe("DateRangeFilter tests", () => {
 		render(<DateRangeFilter filterKey="dateRange" />);
 
 		expect(screen.getByRole("button", { name: "Select Date Range" })).toBeInTheDocument();
+	});
+
+	test("contains the correct number of selectable items", () => {
+		render(<DateRangeFilter filterKey="dateRange" />);
+
+		const filterButton = screen.getByRole("button", { name: "Select Date Range" });
+		expect(filterButton).toBeInTheDocument();
+		fireEvent.click(filterButton);
+
+		expect(screen.getByLabelText("Select start date")).toBeInTheDocument();
+		expect(screen.getByLabelText("Select end date")).toBeInTheDocument();
 	});
 });

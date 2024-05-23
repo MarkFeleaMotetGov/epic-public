@@ -5,43 +5,41 @@ import { useSearch } from "contexts/Search";
 
 import useLists from "queries/useLists";
 
-import DocumentAuthorsFilter from "./DocumentAuthorsFilter";
+import ProjectPhasesFilter from "./ProjectPhasesFilter";
 
 import { FILTER_KEYS, LIST_TYPE_FILTER_KEYS } from "constants/filters";
 
 jest.mock("contexts/Search");
 jest.mock("queries/useLists");
 
-describe("DocumentAuthorsFilter tests", () => {
-	const mockOnFilterChange = jest.fn();
-
+describe("ProjectPhasesFilter tests", () => {
 	beforeEach(() => {
 		useLists.mockReturnValue({
 			data: mockUseListsData,
 		});
 		useSearch.mockReturnValue({
-			onFilterChange: mockOnFilterChange,
+			onFilterChange: jest.fn(),
 			selectedFilters: [],
 		});
 	});
 
-	test("renders the DocumentAuthorsFilter component", () => {
-		render(<DocumentAuthorsFilter />);
+	test("renders the ProjectPhasesFilter component", () => {
+		render(<ProjectPhasesFilter filterKey={FILTER_KEYS.PROJECT_PHASES} />);
 
-		expect(screen.getByRole("button", { name: "Select Document Authors" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Select Project Phases" })).toBeInTheDocument();
 	});
 
 	test("contains the correct number of selectable items", () => {
-		render(<DocumentAuthorsFilter />);
+		render(<ProjectPhasesFilter filterKey={FILTER_KEYS.PROJECT_PHASES} />);
 
-		const filterButton = screen.getByRole("button", { name: "Select Document Authors" });
+		const filterButton = screen.getByRole("button", { name: "Select Project Phases" });
 		expect(filterButton).toBeInTheDocument();
 		fireEvent.click(filterButton);
 
 		const filterItems = screen.getAllByRole("checkbox");
 		expect(filterItems.length).toBe(
 			mockUseListsData[0].searchResults.filter(
-				(item) => item.type === LIST_TYPE_FILTER_KEYS[FILTER_KEYS.DOCUMENT_AUTHORS],
+				(item) => item.type === LIST_TYPE_FILTER_KEYS[FILTER_KEYS.PROJECT_PHASES],
 			).length,
 		);
 	});
